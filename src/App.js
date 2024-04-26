@@ -1,23 +1,20 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
+import Calendar from './components/Calendar/Calendar';
+import AssignmentList from './components/AssignmentList/AssignmentList';
+import AssignmentForm from './components/AssignmentForm/AssignmentForm';
 
 function App() {
+  const [refresh, setRefresh] = useState(false);
+  const handleAssignmentAdded = () => {
+    setRefresh(!refresh);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      {/* <AssignmentList key={refresh} /> */}
+      <AssignmentForm onAssignmentAdded={handleAssignmentAdded} />
+      <Calendar key={refresh} />
     </div>
   );
 }
