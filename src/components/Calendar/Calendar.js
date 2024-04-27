@@ -3,18 +3,22 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import assignmentService from "../../api/services/assignmentService";
+import holidayService from "../../api/services/holidayService";
 
 const Calendar = () => {
     const [assignments, setAssignments] = useState([]);
+    const [holidays, setHolidays] = useState([]);
 
     useEffect(() => {
-        fetchAssignment();
+        fetchData();
     }, []);
 
-    const fetchAssignment = async() => {
+    const fetchData = async() => {
         try {
             const assignmentData = await assignmentService.getAllAssignments();
+            const holidaytData = await holidayService.getAllHolidays();
             setAssignments(assignmentData);
+            setHolidays(holidaytData);
         } catch(error) {
             console.error('Error fetching assignments: ', error);
         }
@@ -35,7 +39,7 @@ const Calendar = () => {
                     right: "dayGridMonth,timeGridWeek,timeGridDay"
                 }}
                 plugins={[dayGridPlugin, timeGridPlugin]}
-                events={assignments}
+                eventSources={[holidays, assignments]}
                 selectable={true}
                 editable={true}
                 eventClick={function(info) {
